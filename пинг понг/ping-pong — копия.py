@@ -1,7 +1,8 @@
 #Создай собственный Шутер!
 from pygame import *
 from random import randint
-
+speed_x = 3
+speed_y = 3
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed):
         super().__init__()
@@ -40,7 +41,7 @@ class Player1(GameSprite):
  
 platform = Player('New Piskel (18).png', 30, 30, 2)
 platform2 = Player1('New Piskel (18).png', 600, 30, 2)
-ball = GameSprite('New Piskel (19).png', 300, 50, 2)
+ball = GameSprite('New Piskel (19).png', 70, 50, 2)
 window = display.set_mode((700, 500))
 display.set_caption("pygame window")
 background = transform.scale(image.load("New Piskel (20).png"), (700, 700))
@@ -56,6 +57,12 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+            ball.rect.x += speed_x
+            ball.rect.y += speed_y
+        if ball.rect.y > 700-50 or ball.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(platform, ball) or sprite.collide_rect(platform2, ball):
+            speed_x *= -1
     ball.recet()
     ball.update()
     platform.recet()
